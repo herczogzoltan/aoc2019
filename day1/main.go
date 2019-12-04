@@ -10,17 +10,14 @@ import (
 )
 
 func main() {
-	file, err := os.Open("input")
-	if err != nil {
-		log.Fatal("An error occured when tried to open the file")
-	}
+	file := openFile("input")
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	var total int
-	var mass int
+
 	for scanner.Scan() {
-		mass, err = strconv.Atoi(scanner.Text())
+		mass, err := strconv.Atoi(scanner.Text())
 		if err != nil {
 			log.Error("An error occured while converting the line of the file from string to int")
 			log.Error(err)
@@ -29,6 +26,14 @@ func main() {
 	}
 
 	fmt.Println("Total: ", total)
+}
+
+func openFile(path string) *os.File {
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal("An error occured when tried to open the file")
+	}
+	return file
 }
 
 func calculateFuel(mass int) int {
