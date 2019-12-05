@@ -20,7 +20,9 @@ var (
 )
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&InputSource, "source", "s", "", "File path which contains the input for the assignment")
+	rootCmd.Flags().StringVarP(&InputSource, "source", "src", "", "File path which contains the input for the assignment")
+	rootCmd.MarkFlagRequired("source")
+
 }
 
 // Execute the root command.
