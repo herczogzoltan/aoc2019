@@ -15,14 +15,20 @@ func init() {
 
 var (
 	day1part1Cmd = &cobra.Command{
-		Use: "day1part1",
+		Use: "day1",
 		Run: func(cmd *cobra.Command, args []string) {
-			day1part1()
+			switch Part {
+			case 1:
+				firstPart()
+			case 2:
+				secondPart()
+			}
+
 		},
 	}
 )
 
-func day1part1() {
+func firstPart() {
 	file := LoadSourceFile(InputSource)
 	defer file.Close()
 
@@ -42,4 +48,8 @@ func day1part1() {
 
 func calculateFuel(mass int) int {
 	return (mass / 3) - 2
+}
+
+func secondPart() {
+	fmt.Println("second part")
 }

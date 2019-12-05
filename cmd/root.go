@@ -10,6 +10,8 @@ import (
 var (
 	// InputSource is the filepath to read input values from.
 	InputSource string
+	// Part of the daily assignment. Either 1 or 2.
+	Part int
 
 	rootCmd = &cobra.Command{
 		Use:   "aoc2019",
@@ -20,8 +22,10 @@ var (
 )
 
 func init() {
-	rootCmd.Flags().StringVarP(&InputSource, "source", "src", "", "File path which contains the input for the assignment")
+	rootCmd.PersistentFlags().StringVarP(&InputSource, "source", "s", "", "File path which contains the input for the assignment")
+	rootCmd.PersistentFlags().IntVarP(&Part, "part", "p", 1, "Which part do you want to run for the specific day?")
 	rootCmd.MarkFlagRequired("source")
+	rootCmd.MarkFlagRequired("part")
 
 }
 
