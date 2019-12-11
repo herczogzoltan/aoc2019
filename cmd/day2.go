@@ -10,15 +10,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type day2 Day
+
 var (
-	day2 = &cobra.Command{
+	day2Command = &cobra.Command{
 		Use: "day2",
 		Run: func(cmd *cobra.Command, args []string) {
+			day2 := day2{
+				filePath: InputSource,
+			}
 			switch Part {
 			case 1:
-				fmt.Println("First part result: ", gravityAssist(12, 2))
+				fmt.Println("First part result: ", day2.firstPart(12, 2))
 			case 2:
-				fmt.Printf("Second part result: %v", instructionPointer())
+				fmt.Printf("Second part result: %v", day2.secondPart())
 			}
 		},
 	}
@@ -27,10 +32,10 @@ var (
 )
 
 func init() {
-	rootCmd.AddCommand(day2)
+	rootCmd.AddCommand(day2Command)
 }
 
-func gravityAssist(noun int, verb int) int {
+func (d day2) firstPart(noun int, verb int) int {
 	file := LoadSourceFile(InputSource)
 	defer file.Close()
 	addresses := getRowAsNumberArray(file)
@@ -57,12 +62,12 @@ func gravityAssist(noun int, verb int) int {
 	return addresses[0]
 }
 
-func instructionPointer() int {
+func (d day2) secondPart() int {
 	noun := 0
 	for noun <= 99 {
 		verb := 0
 		for verb <= 99 {
-			result := gravityAssist(noun, verb)
+			result := d.firstPart(noun, verb)
 
 			fmt.Printf("Verb: %v, Noun: %v Result: %v\n", verb, noun, result)
 			if result == desiredOutput {

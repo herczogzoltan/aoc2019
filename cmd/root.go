@@ -7,6 +7,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Day will be the base struct for the ongoing days.
+type Day struct {
+	filePath string
+}
+
 var (
 	// InputSource is the filepath to read input values from.
 	InputSource string

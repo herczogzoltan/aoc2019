@@ -9,27 +9,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(day1)
-}
+type day1 Day
 
 var (
-	day1 = &cobra.Command{
+	day1Command = &cobra.Command{
 		Use: "day1",
 		Run: func(cmd *cobra.Command, args []string) {
+			day1 := day1{
+				filePath: InputSource,
+			}
 			switch Part {
 			case 1:
-				fmt.Println("First part result: ", firstPart())
+				fmt.Println("First part result: ", day1.firstPart())
 			case 2:
-				fmt.Println("Second part result: ", secondPart())
+				fmt.Println("Second part result: ", day1.secondPart())
 			}
 
 		},
 	}
 )
 
-func firstPart() int {
-	file := LoadSourceFile(InputSource)
+func init() {
+	rootCmd.AddCommand(day1Command)
+}
+
+func (d day1) firstPart() int {
+	file := LoadSourceFile(d.filePath)
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
@@ -48,8 +53,8 @@ func calculateFuel(mass int) int {
 	return int(math.Trunc(((float64(mass) / 3) - 2)))
 }
 
-func secondPart() int {
-	file := LoadSourceFile(InputSource)
+func (d day1) secondPart() int {
+	file := LoadSourceFile(d.filePath)
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
