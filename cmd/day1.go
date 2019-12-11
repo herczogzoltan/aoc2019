@@ -6,7 +6,6 @@ import (
 	"math"
 	"strconv"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -38,9 +37,7 @@ func firstPart() int {
 
 	for scanner.Scan() {
 		mass, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			log.Error("An error occured while converting the line of the file from string to int")
-		}
+		Check(err)
 		total += calculateFuel(mass)
 	}
 
@@ -59,10 +56,7 @@ func secondPart() int {
 	var total int
 	for scanner.Scan() {
 		moduleMass, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			log.Error("An error occured while converting the line of the file from string to int")
-		}
-
+		Check(err)
 		total += calcSecond(moduleMass)
 	}
 

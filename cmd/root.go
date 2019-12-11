@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"log"
 	"os"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -41,4 +41,11 @@ func LoadSourceFile(path string) *os.File {
 		log.Fatal("An error occured when tried to open the file")
 	}
 	return file
+}
+
+// Check checks if error is not nil, and then logs it.
+func Check(e error) {
+	if e != nil {
+		log.Error(e)
+	}
 }
