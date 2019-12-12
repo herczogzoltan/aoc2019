@@ -50,10 +50,12 @@ func (d day3) firstPart() int {
 	firstWire := getWirePath(scanner.Text())
 	scanner.Scan()
 	secondWire := getWirePath(scanner.Text())
-	intersectPoints := findIntersectPoints(firstWire, secondWire)
+	return findClosest(findIntersectPoints(firstWire, secondWire))
+}
 
+func findClosest(coordinates []coordinate) int {
 	closest := 0
-	for i, intersect := range intersectPoints {
+	for i, intersect := range coordinates {
 		newValue := calculateManhattanDistance(intersect)
 		if i == 0 {
 			closest = newValue
