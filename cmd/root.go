@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 
+	"github.com/herczogzoltan/aoc2019/version"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -24,6 +26,18 @@ var (
 		Long: `Advent of Code 2019 solutions written in
 	Go-lang as a practice and the joy of my own.`,
 	}
+
+	versionCmd = &cobra.Command{
+		Use:   "version",
+		Short: "Print the version number of AoC 2019",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Build Date:", version.BuildDate)
+			fmt.Println("Git Commit:", version.GitCommit)
+			fmt.Println("Version:", version.Version)
+			fmt.Println("Go Version:", version.GoVersion)
+			fmt.Println("OS / Arch:", version.OsArch)
+		},
+	}
 )
 
 func init() {
@@ -31,6 +45,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVarP(&Part, "part", "p", 1, "Which part do you want to run for the specific day?")
 	rootCmd.MarkFlagRequired("source")
 	rootCmd.MarkFlagRequired("part")
+	rootCmd.AddCommand(versionCmd)
 
 }
 
