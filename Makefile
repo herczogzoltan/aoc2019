@@ -26,12 +26,10 @@ build:
 get-deps:
 	@echo "Downloading dependencies..."
 	go mod download
-	@echo "Done"
 
 update-deps:
 	@echo "Updating dependencies..."
 	go mod tidy
-	@echo "Done"
 
 test:
 	go test ./... -v
