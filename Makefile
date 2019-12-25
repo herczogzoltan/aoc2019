@@ -4,7 +4,7 @@ default: help
 
 BIN_NAME="aoc2019"
 
-VERSION := $(shell grep "const Version " version/version.go | sed -E 's/.*"(.+)".$$/\1/')
+VERSION := $(shell grep "const Version " ./src/version/version.go | sed -E 's/.*"(.+)".$$/\1/')
 GIT_COMMIT = $(shell git rev-parse HEAD)
 BUILD_DATE = $(shell date '+%Y-%m-%d-%H:%M:%S')
 REPOSITORY = github.com/herczogzoltan/aoc2019
