@@ -15,7 +15,7 @@ const (
 )
 
 type Wire struct {
-	coordinates []coordinate
+	coordinates map[int]coordinate
 }
 
 type coordinate struct {
@@ -27,11 +27,11 @@ func CalculateManhattanDistance(coordinate coordinate) int {
 	return AbsoluteValue(coordinate.x) + AbsoluteValue(coordinate.y)
 }
 
-func FindClosest(coordinates []coordinate) int {
+func FindClosest(wire Wire) int {
 	closest := 0
-	for i, intersect := range coordinates {
+	for _, intersect := range wire.coordinates {
 		newValue := CalculateManhattanDistance(intersect)
-		if i == 0 {
+		if closest == 0 {
 			closest = newValue
 			continue
 		}
@@ -44,15 +44,32 @@ func FindClosest(coordinates []coordinate) int {
 	return closest
 }
 
-func FindIntersectPoints(a Wire, b Wire) []coordinate {
-	var coordinates []coordinate
+func FindFastest(wire Wire) int {
+	fastest := 0
+	for i, _ := range wire.coordinates {
+		newValue := i
+		if fastest == 0 {
+			fastest = newValue
+			continue
+		}
 
-	for _, Acoords := range a.coordinates {
-		for _, Bcoords := range b.coordinates {
+		if newValue < fastest {
+			fastest = newValue
+		}
+	}
+
+	return fastest
+}
+
+func FindIntersectPoints(a Wire, b Wire) Wire {
+	var coordinates Wire
+	coordinates.coordinates = make(map[int]coordinate)
+	for i, Acoords := range a.coordinates {
+		for j, Bcoords := range b.coordinates {
 
 			if Acoords.x == Bcoords.x {
 				if Acoords.y == Bcoords.y {
-					coordinates = append(coordinates, Bcoords)
+					coordinates.coordinates[i+j] = Bcoords
 				}
 			}
 		}
@@ -64,8 +81,11 @@ func FindIntersectPoints(a Wire, b Wire) []coordinate {
 func GetWirePath(line string) Wire {
 	pathString := strings.Split(line, ",")
 	var wire Wire
+	wire.coordinates = make(map[int]coordinate)
+
 	x := 0
 	y := 0
+	j := 0
 	for _, route := range pathString {
 		direction := string(route[0])
 		distance, err := strconv.Atoi(route[1:len(route)])
@@ -77,24 +97,29 @@ func GetWirePath(line string) Wire {
 		case DirectionUp:
 			for i := 0; i < distance; i++ {
 				y++
-				wire.coordinates = append(wire.coordinates, coordinate{x: x, y: y})
+				j++
+				wire.coordinates[j] = coordinate{x: x, y: y}
 			}
 		case DirectionDown:
 			for i := 0; i < distance; i++ {
 				y--
-				wire.coordinates = append(wire.coordinates, coordinate{x: x, y: y})
+				j++
+				wire.coordinates[j] = coordinate{x: x, y: y}
 			}
 		case DirectionRight:
 			for i := 0; i < distance; i++ {
 				x++
-				wire.coordinates = append(wire.coordinates, coordinate{x: x, y: y})
+				j++
+				wire.coordinates[j] = coordinate{x: x, y: y}
 			}
 		case DirectionLeft:
 			for i := 0; i < distance; i++ {
 				x--
-				wire.coordinates = append(wire.coordinates, coordinate{x: x, y: y})
+				j++
+				wire.coordinates[j] = coordinate{x: x, y: y}
 			}
 		}
+
 	}
 
 	return wire

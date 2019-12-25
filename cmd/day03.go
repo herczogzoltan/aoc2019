@@ -26,5 +26,13 @@ func (d Day03) Part1(input []byte) string {
 }
 
 func (d Day03) Part2(input []byte) string {
-	return fmt.Sprintf("Implement Part 2")
+
+	var wires []day03.Wire
+	lines := day03.ParseInput(input)
+
+	for _, line := range lines {
+		wires = append(wires, day03.GetWirePath(line))
+	}
+
+	return fmt.Sprintf("%d", day03.FindFastest(day03.FindIntersectPoints(wires[0], wires[1])))
 }
