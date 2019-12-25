@@ -1,24 +1,19 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/herczogzoltan/aoc2019/version"
+	"fmt"
+	"io/ioutil"
+
+	"github.com/herczogzoltan/aoc2019/src/core"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-// Day will be the base struct for the ongoing days.
-type Day struct {
-	filePath string
-}
-
 var (
-	// InputSource is the filepath to read input values from.
-	InputSource string
-	// Part of the daily assignment. Either 1 or 2.
-	Part int
+	inputSource string
+	part        int
 
 	rootCmd = &cobra.Command{
 		Use:   "aoc2019",
@@ -26,27 +21,40 @@ var (
 		Long: `Advent of Code 2019 solutions written in
 	Go-lang as a practice and the joy of my own.`,
 	}
-
-	versionCmd = &cobra.Command{
-		Use:   "version",
-		Short: "Print the version number of AoC 2019",
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Build Date:", version.BuildDate)
-			fmt.Println("Git Commit:", version.GitCommit)
-			fmt.Println("Version:", version.Version)
-			fmt.Println("Go Version:", version.GoVersion)
-			fmt.Println("OS / Arch:", version.OsArch)
-		},
-	}
 )
 
+type CommandFunc func() core.Day
+
+// RegisterDay will be used to register a day from outside.
+func RegisterDay(name string, f CommandFunc) {
+	rootCmd.AddCommand(&cobra.Command{
+		Use: name,
+		Run: func(cmd *cobra.Command, args []string) {
+			input, err := ioutil.ReadFile(inputSource)
+			if err != nil {
+				input = []byte(inputSource)
+			}
+
+			for input[len(input)-1] == 0x0a {
+				input = input[:len(input)-1]
+			}
+
+			day := f()
+			switch part {
+			case 1:
+				fmt.Println("First part result: ", day.Part1(input))
+			case 2:
+				fmt.Println("Second part result: ", day.Part2(input))
+			}
+		},
+	})
+}
+
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&InputSource, "source", "s", "", "File path which contains the input for the assignment")
-	rootCmd.PersistentFlags().IntVarP(&Part, "part", "p", 1, "Which part do you want to run for the specific day?")
+	rootCmd.PersistentFlags().StringVarP(&inputSource, "source", "s", "", "File path which contains the input for the assignment")
+	rootCmd.PersistentFlags().IntVarP(&part, "part", "p", 1, "Which part do you want to run for the specific day?")
 	rootCmd.MarkFlagRequired("source")
 	rootCmd.MarkFlagRequired("part")
-	rootCmd.AddCommand(versionCmd)
-
 }
 
 // Execute the root command.
@@ -54,7 +62,6 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-// LoadSourceFile loads a file to process by another command.
 func LoadSourceFile(path string) *os.File {
 	file, err := os.Open(path)
 	if err != nil {
