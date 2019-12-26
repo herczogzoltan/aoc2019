@@ -51,11 +51,10 @@ func IsStrongerPassword(p string) bool {
 			}
 
 			for j := i + 2; j < len(p); j++ {
-				if p[j] == p[i] {
-					i++
-					continue
+				if p[j] != p[i] {
+					break
 				}
-				break
+				i++
 			}
 		}
 	}
