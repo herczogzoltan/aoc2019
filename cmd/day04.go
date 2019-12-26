@@ -14,9 +14,11 @@ func init() {
 }
 
 func (d *Day04) Part1(input []byte) string {
-	return fmt.Sprintf("%d", day04.FindPasswords(day04.ParseInput(input)))
+	f, t := day04.ParseInput(input)
+	return fmt.Sprintf("%d", day04.FindPasswords(f, t, day04.IsPassword))
 }
 
 func (d *Day04) Part2(input []byte) string {
-	return fmt.Sprintf("Part 2 solution!")
+	f, t := day04.ParseInput(input)
+	return fmt.Sprintf("%d", day04.FindPasswords(f, t, day04.IsStrongerPassword))
 }
