@@ -16,7 +16,11 @@ func init() {
 }
 
 func (d Day02) Part1(input []byte) string {
-	return fmt.Sprintf("%d", day02.IntCode(day02.Parser(input), 12, 02))
+	parsed := day02.Parser(input)
+	// because 1202 program alarm: https://www.hq.nasa.gov/alsj/a11/a11.landing.html#1023832
+	parsed[1] = 12
+	parsed[2] = 02
+	return fmt.Sprintf("%d", day02.IntCode(parsed))
 }
 
 func (d Day02) Part2(input []byte) string {
@@ -24,8 +28,10 @@ func (d Day02) Part2(input []byte) string {
 	for noun <= 99 {
 		verb := 0
 		for verb <= 99 {
-
-			result := day02.IntCode(day02.Parser(input), noun, verb)
+			parsed := day02.Parser(input)
+			parsed[1] = noun
+			parsed[2] = verb
+			result := day02.IntCode(parsed)
 
 			if result == desiredOutput {
 				return fmt.Sprintf("%d", 100*noun+verb)

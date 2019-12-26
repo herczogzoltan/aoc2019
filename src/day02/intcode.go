@@ -1,11 +1,7 @@
 package day02
 
-func IntCode(a []int, noun int, verb int) int {
+func IntCode(a []int) int {
 	i := 0
-	// because 1202 program alarm: https://www.hq.nasa.gov/alsj/a11/a11.landing.html#1023832
-	a[1] = noun
-	a[2] = verb
-
 	for i < len(a) {
 		opCode := a[i]
 
